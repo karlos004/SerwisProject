@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SerwisProjekt.Models;
 
 namespace SerwisProjekt.DataAccess.Data
 {
@@ -12,5 +13,6 @@ namespace SerwisProjekt.DataAccess.Data
             : base(options)
         {
         }
+        public DbSet<Repair> Repairs { get; set; }
     }
 }

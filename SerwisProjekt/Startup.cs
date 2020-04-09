@@ -12,6 +12,8 @@ using SerwisProjekt.DataAccess.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SerwisProjekt.DataAccess.Repository.IRepository;
+using SerwisProjekt.DataAccess.Repository;
 
 namespace SerwisProjekt
 {
@@ -32,6 +34,7 @@ namespace SerwisProjekt
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
         }
