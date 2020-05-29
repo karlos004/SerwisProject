@@ -219,34 +219,179 @@ namespace SerwisProjekt.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SerwisProjekt.Models.Repair", b =>
+            modelBuilder.Entity("SerwisProjekt.Models.Klient", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("KlientId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ClientId")
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<byte[]>("Haslo")
+                        .IsRequired()
+                        .HasColumnType("varbinary(24)")
+                        .HasMaxLength(24);
+
+                    b.Property<string>("ImieNazwisko")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("NumerTel")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.HasKey("KlientId");
+
+                    b.ToTable("Klient");
+                });
+
+            modelBuilder.Entity("SerwisProjekt.Models.Naprawa", b =>
+                {
+                    b.Property<int>("NaprawaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("KlientId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
+                    b.Property<decimal>("Kwota")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("MechanicId")
+                    b.Property<int>("SerwisantId")
                         .HasColumnType("int");
 
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Vin")
+                    b.Property<int?>("StatusNaprawyStatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("NaprawaId");
+
+                    b.HasIndex("KlientId");
+
+                    b.HasIndex("SerwisantId");
+
+                    b.HasIndex("StatusNaprawyStatusId");
+
+                    b.ToTable("Naprawa");
+                });
+
+            modelBuilder.Entity("SerwisProjekt.Models.Pracownik", b =>
+                {
+                    b.Property<int>("PracownikId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ImieNazwiskoPracownika")
                         .IsRequired()
-                        .HasColumnType("nvarchar(17)")
-                        .HasMaxLength(17);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
-                    b.HasKey("Id");
+                    b.HasKey("PracownikId");
 
-                    b.ToTable("Repairs");
+                    b.ToTable("Pracownik");
+                });
+
+            modelBuilder.Entity("SerwisProjekt.Models.Serwisant", b =>
+                {
+                    b.Property<int>("SerwisantId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ImieNazwisko")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("SerwisantId");
+
+                    b.ToTable("Serwisant");
+                });
+
+            modelBuilder.Entity("SerwisProjekt.Models.StatusNaprawy", b =>
+                {
+                    b.Property<int>("StatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("NazwaStatusu")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("OpisStatusu")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("StatusId");
+
+                    b.ToTable("StatusNaprawy");
+                });
+
+            modelBuilder.Entity("SerwisProjekt.Models.StatusZam", b =>
+                {
+                    b.Property<int>("ZamStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("NazwaStatusuZam")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OpisStatusuZam")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ZamStatusId");
+
+                    b.ToTable("StatusZam");
+                });
+
+            modelBuilder.Entity("SerwisProjekt.Models.Zamowienie", b =>
+                {
+                    b.Property<int>("ZamId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("KwotaZam")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("NaprawaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PracownikId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StatusZamZamStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ZamStatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ZamId");
+
+                    b.HasIndex("NaprawaId");
+
+                    b.HasIndex("PracownikId");
+
+                    b.HasIndex("StatusZamZamStatusId");
+
+                    b.ToTable("Zamowienie");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -298,6 +443,44 @@ namespace SerwisProjekt.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SerwisProjekt.Models.Naprawa", b =>
+                {
+                    b.HasOne("SerwisProjekt.Models.Klient", "Klient")
+                        .WithMany("Naprawa")
+                        .HasForeignKey("KlientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SerwisProjekt.Models.Serwisant", "Serwisant")
+                        .WithMany("Naprawa")
+                        .HasForeignKey("SerwisantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SerwisProjekt.Models.StatusNaprawy", "StatusNaprawy")
+                        .WithMany("Naprawa")
+                        .HasForeignKey("StatusNaprawyStatusId");
+                });
+
+            modelBuilder.Entity("SerwisProjekt.Models.Zamowienie", b =>
+                {
+                    b.HasOne("SerwisProjekt.Models.Naprawa", "Naprawa")
+                        .WithMany()
+                        .HasForeignKey("NaprawaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SerwisProjekt.Models.Pracownik", "Pracownik")
+                        .WithMany("Zamowienie")
+                        .HasForeignKey("PracownikId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SerwisProjekt.Models.StatusZam", "StatusZam")
+                        .WithMany("Zamowienie")
+                        .HasForeignKey("StatusZamZamStatusId");
                 });
 #pragma warning restore 612, 618
         }

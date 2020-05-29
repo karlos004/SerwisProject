@@ -5,8 +5,8 @@ using System.Text;
 
 namespace SerwisProjekt.DataAccess.Repository.IRepository
 {
-    public interface IRepairRepository : IRepository<Repair>
+    public interface IRepairRepository : IRepository<Naprawa>
     {
-        void Update(Repair repair);
+        void Update(Naprawa repair);
     }
 }
